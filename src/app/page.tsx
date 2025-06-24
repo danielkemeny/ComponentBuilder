@@ -86,9 +86,9 @@ function rgbToHsl(r: number, g: number, b: number): string {
 }
 function hslToRgb(h: number, s: number, l: number): { r: number; g: number; b: number } {
   s /= 100; l /= 100;
-  let c = (1 - Math.abs(2 * l - 1)) * s;
-  let x = c * (1 - Math.abs(((h / 60) % 2) - 1));
-  let m = l - c / 2;
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = l - c / 2;
   let r = 0, g = 0, b = 0;
   if (h < 60) [r, g, b] = [c, x, 0];
   else if (h < 120) [r, g, b] = [x, c, 0];
@@ -146,7 +146,7 @@ function ColorPicker({ onSave, initialColor, initialName, mode = 'add', onCancel
       } else if (type === "hsl") {
         const match = val.match(/hsl\s*\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)/);
         if (match) {
-          let h = parseInt(match[1]), s = parseInt(match[2]), l = parseInt(match[3]);
+          const h = parseInt(match[1]), s = parseInt(match[2]), l = parseInt(match[3]);
           if (
             h >= 0 && h <= 360 &&
             s >= 0 && s <= 100 &&
