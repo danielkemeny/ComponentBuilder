@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import styles from "./page.module.css";
 
 const steps = [
@@ -271,9 +270,6 @@ function generateButtonCode({
   glassBgType,
   gradientStartAlpha,
   showFocus,
-  borderRadius,
-  buttonGlowColor,
-  buttonGlowFade,
 }: {
   buttonText: string;
   buttonBg: string;
@@ -285,20 +281,17 @@ function generateButtonCode({
   glassBgType: 'static' | 'gradient';
   gradientStartAlpha: number;
   showFocus: boolean;
-  borderRadius: number;
-  buttonGlowColor: string;
-  buttonGlowFade: number;
 }) {
   // HTML
   const html = `<button class="custom-btn"><span class="btn-text">${buttonText}</span></button>`;
   // CSS
-  let background = componentStyle === 'glass'
+  const background = componentStyle === 'glass'
     ? glassBgType === 'gradient'
       ? `linear-gradient(to bottom, rgba(255,255,255,${gradientStartAlpha/100}), rgba(0,0,0,0)), ${hexToRgba(buttonBg || '#3498db', glassAlpha)}`
       : hexToRgba(buttonBg || '#3498db', glassAlpha)
     : buttonBg || '#3498db';
-  let backgroundBlendMode = componentStyle === 'glass' && glassBgType === 'gradient' ? 'overlay, normal' : undefined;
-  let boxShadow = componentStyle === 'glass' && glassBgType === 'gradient'
+  const backgroundBlendMode = componentStyle === 'glass' && glassBgType === 'gradient' ? 'overlay, normal' : undefined;
+  const boxShadow = componentStyle === 'glass' && glassBgType === 'gradient'
     ? `inset 0px 0px 10px 0px ${hexToRgba(buttonBg || '#3498db', glassAlpha)}, 0 4px 32px 0 rgba(0,0,0,0.12), 0 1.5px 4px 0 rgba(0,0,0,0.10)`
     : componentStyle === 'glass'
     ? '0 4px 32px 0 rgba(0,0,0,0.12), 0 1.5px 4px 0 rgba(0,0,0,0.10)'
@@ -329,7 +322,7 @@ ${buttonFocusColor ? `.custom-btn:focus {
   outline-offset: 1px;
 }` : ''}
 `;
-  let js = '';
+  const js = '';
   return { html, css, js };
 }
 
@@ -571,9 +564,6 @@ export default function Home() {
       glassBgType,
       gradientStartAlpha,
       showFocus,
-      borderRadius: 26,
-      buttonGlowColor,
-      buttonGlowFade,
     }));
     setStep('code');
   }
@@ -597,52 +587,10 @@ export default function Home() {
         glassBgType,
         gradientStartAlpha,
         showFocus,
-        borderRadius: 26,
-        buttonGlowColor,
-        buttonGlowFade,
       }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, buttonText, buttonBg, buttonTextColor, buttonFocusColor, componentStyle, glassAlpha, glassBlur, glassBgType, gradientStartAlpha, showFocus, selectedComponent]);
-
-  // Add state for auto text color change message
-  const [autoTextColorMsg, setAutoTextColorMsg] = useState<string | null>(null);
-
-  // Add state for manual contrast warning
-  const [manualContrastMsg, setManualContrastMsg] = useState<string | null>(null);
-
-  // useEffect to check contrast and (if enabled) auto-switch text color after any relevant manual change
-  useEffect(() => {
-    if (componentStyle !== 'glass' || glassBgType !== 'gradient' || !sampledBgColors.length) return;
-    const textRgb = hexToRgb(buttonTextColor || '#fff');
-    if (!textRgb) return;
-    // Blend glass gradient start color over sampled background
-    const gradRgb = {
-      r: Math.round(255 * (gradientStartAlpha/100) + sampledBgColors[Math.floor(sampledBgColors.length/2)].r * (1 - gradientStartAlpha/100)),
-      g: Math.round(255 * (gradientStartAlpha/100) + sampledBgColors[Math.floor(sampledBgColors.length/2)].g * (1 - gradientStartAlpha/100)),
-      b: Math.round(255 * (gradientStartAlpha/100) + sampledBgColors[Math.floor(sampledBgColors.length/2)].b * (1 - gradientStartAlpha/100)),
-    };
-    // Blend glass layer over background
-    const blend = (a: number, b: number, alpha: number) => Math.round(a * (glassAlpha/100) + b * (1-glassAlpha/100));
-    const glassOverBg = {
-      r: blend(gradRgb.r, sampledBgColors[Math.floor(sampledBgColors.length/2)].r, glassAlpha),
-      g: blend(gradRgb.g, sampledBgColors[Math.floor(sampledBgColors.length/2)].g, glassAlpha),
-      b: blend(gradRgb.b, sampledBgColors[Math.floor(sampledBgColors.length/2)].b, glassAlpha),
-    };
-    let c = contrast(textRgb, glassOverBg);
-    if (c < 5.1) {
-      setManualContrastMsg('Contrast ratio is below 5.1. Try adjusting transparency, gradient, or text color.');
-      setAutoTextColorMsg(null);
-    } else {
-      setManualContrastMsg(null);
-      setAutoTextColorMsg(null);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [buttonTextColor, glassAlpha, gradientStartAlpha, sampledBgColors, componentStyle, glassBgType]);
-
-  // 1. Add state for glow color and fade duration
-  const [buttonGlowColor, setButtonGlowColor] = useState<string>("");
-  const [buttonGlowFade, setButtonGlowFade] = useState<number>(0.6);
 
   return (
     <div className={styles.container}>
@@ -659,7 +607,7 @@ export default function Home() {
         {step === "foundations" && (
           <section>
             <h1>Foundations</h1>
-            <p>When you start designing components, you'll need to set up some foundations first. This is where you'll define your brand colours, typography, and spacing. At the moment, you can only define colours, but more will be added soon.</p>
+            <p>When you start designing components, you&apos;ll need to set up some foundations first. This is where you&apos;ll define your brand colours, typography, and spacing. At the moment, you can only define colours, but more will be added soon.</p>
             <div className={styles.foundationsLayout}>
               <div className={styles.colorCreatorPanel}>
                 
