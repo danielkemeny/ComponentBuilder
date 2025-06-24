@@ -188,7 +188,7 @@ function ColorPicker({ onSave, initialColor, initialName, mode = 'add', onCancel
   function handleTypeChange(type: string) {
     setInputType(type);
     // Convert current color to new format
-    let rgb = hexToRgb(color);
+    const rgb = hexToRgb(color);
     if (!rgb) return;
     if (type === "hex") setInputValue(color);
     else if (type === "rgb") setInputValue(`rgb(${rgb.r},${rgb.g},${rgb.b})`);
@@ -445,11 +445,11 @@ export default function Home() {
           b: Math.round(255 * (gradientStartAlpha/100) + bg.b * (1 - gradientStartAlpha/100)),
         };
         // Blend glass layer over background using current glassAlpha
-        const blend = (a: number, b: number, alpha: number) => Math.round(a * (glassAlpha/100) + b * (1-alpha/100));
+        const blend = (a: number, b: number) => Math.round(a * (glassAlpha/100) + b * (1-glassAlpha/100));
         const glassOverBg = {
-          r: blend(gradRgb.r, bg.r, glassAlpha),
-          g: blend(gradRgb.g, bg.g, glassAlpha),
-          b: blend(gradRgb.b, bg.b, glassAlpha),
+          r: blend(gradRgb.r, bg.r),
+          g: blend(gradRgb.g, bg.g),
+          b: blend(gradRgb.b, bg.b),
         };
         return contrast(textRgb, glassOverBg);
       }));
@@ -476,11 +476,11 @@ export default function Home() {
     const btnBgRgb = hexToRgb(effectiveButtonBg);
     if (textRgb && btnBgRgb) {
       staticGlassContrast = Math.min(...sampledBgColors.map(bg => {
-        const blend = (a: number, b: number, alpha: number) => Math.round(a * (glassAlpha/100) + b * (1-glassAlpha/100));
+        const blend = (a: number, b: number) => Math.round(a * (glassAlpha/100) + b * (1-glassAlpha/100));
         const glassOverBg = {
-          r: blend(btnBgRgb.r, bg.r, glassAlpha),
-          g: blend(btnBgRgb.g, bg.g, glassAlpha),
-          b: blend(btnBgRgb.b, bg.b, glassAlpha),
+          r: blend(btnBgRgb.r, bg.r),
+          g: blend(btnBgRgb.g, bg.g),
+          b: blend(btnBgRgb.b, bg.b),
         };
         return contrast(textRgb, glassOverBg);
       }));
@@ -493,11 +493,11 @@ export default function Home() {
     const btnBgRgb = hexToRgb(effectiveButtonBg);
     if (textRgb && btnBgRgb) {
       gradientGlassContrast = Math.min(...sampledBgColors.map(bg => {
-        const blend = (a: number, b: number, alpha: number) => Math.round(a * (glassAlpha/100) + b * (1-glassAlpha/100));
+        const blend = (a: number, b: number) => Math.round(a * (glassAlpha/100) + b * (1-glassAlpha/100));
         const glassOverBg = {
-          r: blend(btnBgRgb.r, bg.r, glassAlpha),
-          g: blend(btnBgRgb.g, bg.g, glassAlpha),
-          b: blend(btnBgRgb.b, bg.b, glassAlpha),
+          r: blend(btnBgRgb.r, bg.r),
+          g: blend(btnBgRgb.g, bg.g),
+          b: blend(btnBgRgb.b, bg.b),
         };
         return contrast(textRgb, glassOverBg);
       }));
