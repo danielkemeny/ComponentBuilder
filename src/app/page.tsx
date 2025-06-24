@@ -71,7 +71,8 @@ function rgbToHex(r: number, g: number, b: number): string {
 function rgbToHsl(r: number, g: number, b: number): string {
   r /= 255; g /= 255; b /= 255;
   const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let h = 0, s = 0, l = (max + min) / 2;
+  let h = 0, s = 0;
+  const l = (max + min) / 2;
   if (max !== min) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -164,7 +165,7 @@ function ColorPicker({ onSave, initialColor, initialName, mode = 'add', onCancel
   // When user picks from color wheel, update inputValue in selected format
   function handleColorWheelChange(val: string) {
     setColor(val);
-    let rgb = hexToRgb(val);
+    const rgb = hexToRgb(val);
     if (!rgb) return;
     if (inputType === "hex") setInputValue(val);
     else if (inputType === "rgb") setInputValue(`rgb(${rgb.r},${rgb.g},${rgb.b})`);
@@ -296,7 +297,7 @@ function generateButtonCode({
     : componentStyle === 'glass'
     ? '0 4px 32px 0 rgba(0,0,0,0.12), 0 1.5px 4px 0 rgba(0,0,0,0.10)'
     : undefined;
-  let css = `.custom-btn {
+  const css = `.custom-btn {
   background: ${background};
   ${backgroundBlendMode ? `background-blend-mode: ${backgroundBlendMode};` : ''}
   color: ${buttonTextColor || '#fff'};
@@ -589,7 +590,6 @@ export default function Home() {
         showFocus,
       }));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, buttonText, buttonBg, buttonTextColor, buttonFocusColor, componentStyle, glassAlpha, glassBlur, glassBgType, gradientStartAlpha, showFocus, selectedComponent]);
 
   return (
